@@ -11,7 +11,7 @@ spring:
     driver-class-name: org.h2.Driver
 mybatis:
   type-aliases-package: com.example.mybaitsmapper
-  mapper-locations: classpath:mappings/*Mapper.xml
+  mapper-locations: classpath:META-INF/mappings/*Mapper.xml
   configuration:
     map-underscore-to-camel-case: true
     default-fetch-size: 500
