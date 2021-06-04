@@ -1,0 +1,23 @@
+logging:
+  level:
+    root: debug
+spring:
+  profiles:
+    active: dev
+  sql:
+    init:
+      schema-locations: classpath:import.sql
+  datasource:
+    driver-class-name: org.h2.Driver
+mybatis:
+  type-aliases-package: com.example.mybaitsmapper
+  mapper-locations: classpath:mappings/*Mapper.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    default-fetch-size: 500
+    default-statement-timeout: 80
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
