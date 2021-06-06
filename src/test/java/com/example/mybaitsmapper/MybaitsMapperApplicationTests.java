@@ -28,6 +28,7 @@ class MybaitsMapperApplicationTests {
         User user = new User();
         user.setUserName("测试");
         userMapper.insert(user);
+        userMapper.updateByPrimaryKey(user);
         //保存后自增id回写，不为空
         assert user.getId() != null;
         //删除

@@ -19,10 +19,9 @@ package com.example.mybaitsmapper.extend;
 import io.mybatis.provider.EntityColumn;
 import io.mybatis.provider.EntityFactory;
 import io.mybatis.provider.EntityField;
-import io.mybatis.provider.EntityTable;
 import io.mybatis.provider.extend.Extend;
 import io.mybatis.provider.extend.ExtendEntityColumn;
-import io.mybatis.provider.extend.ExtendEntityTable;
+import io.mybatis.provider.extend.ExtendEntityFactory;
 
 import java.util.Arrays;
 import java.util.List;
@@ -34,11 +33,35 @@ import java.util.stream.Collectors;
  *
  * @author liuzh
  */
-public class CustomExtendEntityFactory extends EntityFactory {
+public class CustomExtendEntityFactory extends ExtendEntityFactory {
 
     private static final char SEPARATOR = '_';
 
-    public static String toUnderlineName(String s) {
+
+    @Override
+    public Optional<List<EntityColumn>> createEntityColumn(EntityField field) {
+        Optional<List<EntityColumn>> optionalEntityColumns = next().createEntityColumn(field);
+        if (optionalEntityColumns.isPresent()) {
+            return optionalEntityColumns.map(columns -> columns.stream().map(ExtendEntityColumn::new).collect(Collectors.toList()));
+        } else if (field.isAnnotationPresent(Extend.Column.class)) {
+            Extend.Column column = field.getAnnotation(Extend.Column.class);
+            String columnName = column.value();
+            if (columnName.isEmpty()) {
+                columnName = field.getName();
+            }
+            // 将字段统一设置为驼峰自动转下划线格式
+            return Optional.of(Arrays.asList(new ExtendEntityColumn(new EntityColumn(field, toUnderlineName(columnName), column.id()))));
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    @Override
+    public int getOrder() {
+        return EntityFactory.DEFAULT_ORDER - 1;
+    }
+
+    private String toUnderlineName(String s) {
         if (s == null) {
             return null;
         }
@@ -63,38 +86,6 @@ public class CustomExtendEntityFactory extends EntityFactory {
             sb.append(Character.toLowerCase(c));
         }
         return sb.toString();
-    }
-
-    @Override
-    public EntityTable createEntityTable(Class<?> entityClass) {
-        return new ExtendEntityTable(next().createEntityTable(entityClass));
-    }
-
-    @Override
-    public void assembleEntityColumns(EntityTable entityTable) {
-        next().assembleEntityColumns(entityTable);
-    }
-
-    @Override
-    public Optional<List<EntityColumn>> createEntityColumn(EntityField field) {
-        Optional<List<EntityColumn>> optionalEntityColumns = next().createEntityColumn(field);
-        if (optionalEntityColumns.isPresent()) {
-            return optionalEntityColumns.map(columns -> columns.stream().map(ExtendEntityColumn::new).collect(Collectors.toList()));
-        } else if (field.isAnnotationPresent(Extend.Column.class)) {
-            Extend.Column column = field.getAnnotation(Extend.Column.class);
-            String columnName = column.value();
-            if (columnName.isEmpty()) {
-                columnName = field.getName();
-            }
-            // 将字段统一设置为驼峰自动转下划线格式
-            return Optional.of(Arrays.asList(new ExtendEntityColumn(new EntityColumn(field, toUnderlineName(columnName), column.id()))));
-        }
-        return Optional.empty();
-    }
-
-    @Override
-    public int getOrder() {
-        return EntityFactory.DEFAULT_ORDER - 1;
     }
 
 
