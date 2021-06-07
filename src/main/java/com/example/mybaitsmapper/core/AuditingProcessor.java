@@ -15,9 +15,6 @@ import java.util.Optional;
  */
 @Slf4j
 public class AuditingProcessor {
-
-    static AuditorAware<String> auditorAware = () -> Optional.of("xxxx");
-
     /**
      * 对实体参数执行自动填充
      *
@@ -77,6 +74,7 @@ public class AuditingProcessor {
 
     /**
      * 获取当前日期
+     *
      * @param auditingEntityColumn
      * @return
      */

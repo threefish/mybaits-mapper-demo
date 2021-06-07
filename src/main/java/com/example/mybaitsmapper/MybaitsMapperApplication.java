@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * @author huc
  */
-@MapperScan(basePackageClasses = MybaitsMapperApplication.class)
+@MapperScan(basePackages = "com.example.mybaitsmapper.demo")
 @SpringBootApplication
 @Slf4j
 public class MybaitsMapperApplication {
