@@ -37,6 +37,7 @@ class MybaitsMapperApplicationTests {
         System.out.println(users.getTotal());
         System.out.println(users.getResult());
 
+
         Example<User> example = new Example<>();
         Example.Criteria<User> criteria = example.createCriteria();
         criteria.andEqualTo(User::getUserName, "Afghanistan");

@@ -1,6 +1,5 @@
 package com.example.mybaitsmapper.annotation;
 
-import com.example.mybaitsmapper.core.AuditingEntityColumnType;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -14,7 +13,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(value = {ElementType.METHOD, ElementType.FIELD})
 public @interface CreatedBy {
-
-    AuditingEntityColumnType type() default AuditingEntityColumnType.CREATED_BY;
-
+    /**
+     * [当前字段==null]时才自动填充
+     */
+    boolean nullEffective() default true;
 }

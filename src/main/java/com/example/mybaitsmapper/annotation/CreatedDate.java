@@ -1,7 +1,5 @@
 package com.example.mybaitsmapper.annotation;
 
-import com.example.mybaitsmapper.core.AuditingEntityColumnType;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -14,5 +12,4 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(value = {ElementType.METHOD, ElementType.FIELD})
 public @interface CreatedDate {
-    AuditingEntityColumnType type() default AuditingEntityColumnType.CREATED_DATE;
 }

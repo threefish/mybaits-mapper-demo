@@ -1,17 +1,19 @@
 package com.example.mybaitsmapper.demo;
 
-import com.example.mybaitsmapper.annotation.AuditingEntity;
-import com.example.mybaitsmapper.annotation.CreatedBy;
-import com.example.mybaitsmapper.annotation.LastModifiedBy;
+import com.example.mybaitsmapper.annotation.*;
 import com.example.mybaitsmapper.base.BaseEntity;
 import io.mybatis.activerecord.EntityRecord;
 import io.mybatis.activerecord.ExampleRecord;
 import io.mybatis.provider.extend.Extend;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+import java.util.Date;
+
 /**
  * @author huc
  */
+@Data
 @AuditingEntity
 @Extend.Table("user")
 public class User extends BaseEntity implements EntityRecord<User, Long>, ExampleRecord<User, Long> {
@@ -27,46 +29,15 @@ public class User extends BaseEntity implements EntityRecord<User, Long>, Exampl
     private String createBy;
 
     @Extend.Column
+    @CreatedDate
+    private Date createDate;
+
+    @Extend.Column
     @LastModifiedBy
-    private String updateBy;
+    private String lastModifiedBy;
 
-    public Long getId() {
-        return id;
-    }
+    @Extend.Column
+    @LastModifiedDate
+    private LocalDateTime lastModifiedDate;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getSex() {
-        return sex;
-    }
-
-    public void setSex(String sex) {
-        this.sex = sex;
-    }
-
-    public String getCreateBy() {
-        return createBy;
-    }
-
-    public void setCreateBy(String createBy) {
-        this.createBy = createBy;
-    }
-
-    public String getUpdateBy() {
-        return updateBy;
-    }
-
-    public void setUpdateBy(String updateBy) {
-        this.updateBy = updateBy;
-    }
 }
