@@ -28,7 +28,6 @@ class MybaitsMapperApplicationTests {
         User user = new User();
         user.setUserName("测试");
         userMapper.insert(user);
-        userMapper.updateByPrimaryKey(user);
         //保存后自增id回写，不为空
         assert user.getId() != null;
         //删除
@@ -37,7 +36,7 @@ class MybaitsMapperApplicationTests {
         System.out.println(users.getTotal());
         System.out.println(users.getResult());
 
-
+        userMapper.updateByPrimaryKey(user);
         Example<User> example = new Example<>();
         Example.Criteria<User> criteria = example.createCriteria();
         criteria.andEqualTo(User::getUserName, "Afghanistan");

@@ -1,6 +1,7 @@
 package com.example.mybaitsmapper.core;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.mapping.SqlCommandType;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -18,14 +19,14 @@ public class AuditingProcessor {
     /**
      * 对实体参数执行自动填充
      *
-     * @param operatType
+     * @param sqlCommandType
      * @param parameterObject
      */
-    public static void executeFill(AuditingOperatType operatType, Object parameterObject) {
+    public static void executeFill(SqlCommandType sqlCommandType, Object parameterObject) {
         List<AuditingEntityColumn> auditingEntityColumns = AuditingEntityFactory.createAuditingEntityColumns(parameterObject.getClass());
-        if (operatType == AuditingOperatType.INSERT) {
+        if (sqlCommandType == SqlCommandType.INSERT) {
             operatInsertType(parameterObject, auditingEntityColumns);
-        } else {
+        } else if (sqlCommandType == SqlCommandType.UPDATE) {
             operatUpdateType(parameterObject, auditingEntityColumns);
         }
     }
